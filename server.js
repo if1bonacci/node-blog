@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
+import fileUpload from 'express-fileupload';
 
 class Server {
   constructor(port) {
@@ -14,6 +15,8 @@ class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.static(path.resolve(__dirname, 'public')));
+    this.app.use(express.static(path.resolve(__dirname, './uploads')));
+    this.app.use(fileUpload());
 
     //inject routes
     this.routes()

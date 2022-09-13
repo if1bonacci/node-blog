@@ -19,4 +19,7 @@ router.post('/user', userController.createUser);
 /* POST upload avatar. */
 router.post('/user/:id/upload-avatar', userController.uploadAvatar);
 
+/* POST upload avatar. */
+router.post('/user/:id/delete', userController.remove);
+
 export default router;

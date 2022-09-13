@@ -45,6 +45,16 @@ class UserController extends BaseController {
       return res.status(500).redirect(`/user/${req.params.id}?error=true`);
     }
   }
+
+  remove = async (req, res) => {
+    try {
+      await User.deleteOne({id: req.params.id});
+
+      return res.status(200).redirect(`/user?user_remove=true`);
+    } catch (err) {
+        res.status(500).json(this.handlerErrors(err));
+    }
+  }
 }
 
 export default UserController;

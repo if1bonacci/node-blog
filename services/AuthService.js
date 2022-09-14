@@ -1,28 +1,28 @@
-import passportLocal from "passport-local";
-import User from "../models/User.js";
-import bcrypt from "bcrypt";
+import passportLocal from 'passport-local'
+import User from '../models/User.js'
+import bcrypt from 'bcrypt'
 
 class AuthService {
   constructor() {}
   authenticateUser = async (email, password, done) => {
-    const user = await User.findOne({email: email});
-    if (user == null) return done(null, false, {message: 'No user with that email!'});
+    const user = await User.findOne({email: email})
+    if (user == null) return done(null, false, {message: 'No user with that email!'})
 
     try {
       if (await bcrypt.compare(password, user.password)) {
-        return done(null, user);
+        return done(null, user)
       } else {
-        return done(null, false, {message: 'Password is incorrect!'});
+        return done(null, false, {message: 'Password is incorrect!'})
       }
-    } catch(err) {
+    } catch (err) {
       console.log(err)
-      return done(err);
+      return done(err)
     }
   }
 
   initialize = (passport) => {
-    const localStrategy = passportLocal.Strategy;
-    passport.use(new localStrategy({usernameField: 'email'}, this.authenticateUser));
+    const LocalStrategy = passportLocal.Strategy;
+    passport.use(new LocalStrategy({usernameField: 'email'}, this.authenticateUser))
     passport.serializeUser((user, done) => done(null, {
       id: user.id,
       roles: user.roles,
@@ -32,11 +32,11 @@ class AuthService {
     }))
     passport.deserializeUser(async (user, done) => {
       // every time call db
-      // let userData = await User.findOne({id: user.id});
-      return done(null, user);
+      // let userData = await User.findOne({id: user.id})
+      return done(null, user)
     })
   }
 }
 
-export default AuthService;
+export default AuthService
 

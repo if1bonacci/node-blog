@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload';
 import flash from 'express-flash';
 import methodOverride from 'method-override';
 import AuthService from './services/AuthService.js';
+import cookieParser from 'cookie-parser';
 
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
@@ -46,6 +47,7 @@ class Server {
   authModule() {
     this.authService.initialize(passport);
     this.app.use(flash());
+    this.app.use(cookieParser());
     this.app.use(this.session)
     this.app.use(passport.initialize());
     this.app.use(passport.session());

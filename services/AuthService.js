@@ -23,9 +23,17 @@ class AuthService {
   initialize = (passport) => {
     const localStrategy = passportLocal.Strategy;
     passport.use(new localStrategy({usernameField: 'email'}, this.authenticateUser));
-    passport.serializeUser((user, done) => done(null, user.id))
-    passport.deserializeUser((id, done) => {
-      return done(null, User.findOne({id: id}))
+    passport.serializeUser((user, done) => done(null, {
+      id: user.id,
+      roles: user.roles,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatar: user.avatar
+    }))
+    passport.deserializeUser(async (user, done) => {
+      // every time call db
+      // let userData = await User.findOne({id: user.id});
+      return done(null, user);
     })
   }
 }

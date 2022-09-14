@@ -19,7 +19,7 @@ class User extends Schema {
           trim: true,
           validate: [validator.isEmail, 'email is not valid.']
         },
-        role: {
+        roles: {
           type: Array,
           required: true,
           default: ['ROLE_USER']

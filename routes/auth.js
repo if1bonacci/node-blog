@@ -1,32 +1,19 @@
 import { Router } from "express";
-import AuthController from "../controllers/AuthController.js";
 import passport from "passport";
+import authController from "../controllers/AuthController.js";
+import commonMiddleware from "../middlewares/CommonMiddleware.js";
 
 const router = Router();
-const authController = new AuthController();
 
-const isNotAuth = function(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/')
-  }
-  return next();
-}
-
-const isAuthUser = function (req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/login');
-}
 
 /* GET register page. */
-router.get('/register', isNotAuth, authController.registerPage);
+router.get('/register', commonMiddleware.isNotAuth, authController.registerPage);
 
 /* POST registration action */
-router.post('/register', isNotAuth, authController.register);
+router.post('/register', commonMiddleware.isNotAuth, authController.register);
 
 /* GET login page. */
-router.get('/login', isNotAuth, authController.loginPage);
+router.get('/login', commonMiddleware.checkRoles(['ROLE_USER']), authController.loginPage);
 
 /* POST login action. */
 router.post('/login', passport.authenticate('local', {
@@ -37,6 +24,6 @@ router.post('/login', passport.authenticate('local', {
 }));
 
 /* DELETE logout user */
-router.delete('/logout', isAuthUser, authController.logout);
+router.delete('/logout', commonMiddleware.isAuthUser, authController.logout);
 
 export default router;

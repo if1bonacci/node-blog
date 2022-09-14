@@ -28,4 +28,4 @@ class AuthController extends BaseController {
   }
 }
 
-export default AuthController;
+export default new AuthController();

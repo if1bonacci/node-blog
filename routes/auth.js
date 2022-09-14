@@ -12,7 +12,7 @@ router.get('/register', commonMiddleware.isNotAuth, authController.registerPage)
 router.post('/register', commonMiddleware.isNotAuth, authController.register)
 
 /* GET login page. */
-router.get('/login', commonMiddleware.checkRoles(['ROLE_USER']), authController.loginPage)
+router.get('/login', authController.loginPage)
 
 /* POST login action. */
 router.post('/login', passport.authenticate('local', {
@@ -22,7 +22,7 @@ router.post('/login', passport.authenticate('local', {
   successFlash: true
 }))
 
-/* DELETE logout user */
-router.delete('/logout', commonMiddleware.isAuthUser, authController.logout)
+/* GET logout user */
+router.get('/logout', commonMiddleware.isAuthUser, authController.logout)
 
 export default router

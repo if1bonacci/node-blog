@@ -1,11 +1,12 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController.js";
+import commonMiddleware from "../middlewares/CommonMiddleware.js";
 
 const router = Router();
 const userController = new UserController();
 
 /* GET users listing. */
-router.get('/user', userController.getAll);
+router.get('/user', commonMiddleware.checkRoles(['ROLE_USER']), userController.getAll);
 
 /* GET view single user. */
 router.get('/user/:id', userController.getById);

@@ -1,15 +1,16 @@
-import express from 'express';
-import path from 'path';
-import passport from 'passport';
-import fileUpload from 'express-fileupload';
-import flash from 'express-flash';
-import methodOverride from 'method-override';
-import AuthService from './services/AuthService.js';
-import cookieParser from 'cookie-parser';
+import express from 'express'
+import path from 'path'
+import engine from 'ejs-mate'
+import passport from 'passport'
+import fileUpload from 'express-fileupload'
+import flash from 'express-flash'
+import methodOverride from 'method-override'
+import AuthService from './services/AuthService.js'
+import cookieParser from 'cookie-parser'
 
-import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
-import authRouter from './routes/auth.js';
+import indexRouter from './routes/index.js'
+import usersRouter from './routes/users.js'
+import authRouter from './routes/auth.js'
 
 class Server {
   constructor(port, session) {
@@ -18,12 +19,13 @@ class Server {
     this.session = session;
     this.app = express();
 
+    this.app.engine('ejs', engine);
+    this.app.set('view engine', 'ejs');
     this.app.set('views', path.resolve(__dirname, 'views'));
-    this.app.set('view engine', 'twig');
     this.app.use(methodOverride('_method'));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(express.static(path.resolve(__dirname, 'public')));
+    this.app.use(express.static(path.join(__dirname, 'public')));
     this.app.use('/uploads', express.static(path.resolve('uploads')));
     this.app.use(fileUpload());
 

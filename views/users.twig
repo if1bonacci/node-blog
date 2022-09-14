@@ -17,16 +17,16 @@
     <tbody>
     {% for key, user in users %}
       <tr>
-        <th scope="row">{{ user._id }}</th>
+        <th scope="row">{{ user.id }}</th>
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.password }}</td>
         <td>{{ user.avatar }}</td>
         <td>
-          <a class="btn btn-primary" href="/user/{{ user._id }}">More info</a>
-          <form action="/user/{{ user._id }}/delete" method="post">
-            <input type="hidden" name="id" value="{{ user._id }}">
+          <a class="btn btn-primary" href="/user/{{ user.id }}">More info</a>
+          <form action="/user/{{ user.id }}/delete" method="post">
+            <input type="hidden" name="id" value="{{ user.id }}">
             <button type="submit" class="btn btn-danger">Delete</button>
           </form>
         </td>

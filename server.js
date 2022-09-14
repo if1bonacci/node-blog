@@ -1,23 +1,34 @@
 import express from 'express';
 import path from 'path';
+import passport from 'passport';
+import fileUpload from 'express-fileupload';
+import flash from 'express-flash';
+import methodOverride from 'method-override';
+import AuthService from './services/AuthService.js';
+
 import indexRouter from './routes/index.js';
 import usersRouter from './routes/users.js';
 import authRouter from './routes/auth.js';
-import fileUpload from 'express-fileupload';
 
 class Server {
-  constructor(port) {
+  constructor(port, session) {
     const __dirname = path.resolve();
     this.port = port;
+    this.session = session;
     this.app = express();
 
     this.app.set('views', path.resolve(__dirname, 'views'));
     this.app.set('view engine', 'twig');
+    this.app.use(methodOverride('_method'));
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.static(path.resolve(__dirname, 'public')));
-    this.app.use(express.static(path.resolve(__dirname, './uploads')));
+    this.app.use('/uploads', express.static(path.resolve('uploads')));
     this.app.use(fileUpload());
+
+    //inject auth module
+    this.authService = new AuthService();
+    this.authModule()
 
     //inject routes
     this.routes()
@@ -31,6 +42,13 @@ class Server {
     this.app.use(indexRouter);
     this.app.use(usersRouter);
     this.app.use(authRouter);
+  }
+  authModule() {
+    this.authService.initialize(passport);
+    this.app.use(flash());
+    this.app.use(this.session)
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
   }
 }
 

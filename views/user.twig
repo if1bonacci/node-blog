@@ -25,7 +25,7 @@
         <td>{{ user.lastName }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.age }}</td>
-        <td><img src="{{ user.avatar }}" alt=""></td>
+        <td><img src="/user/avatar/{{ user.avatar }}" alt="{{ user.firstName }}"></td>
       </tr>
       </tbody>
     </table>

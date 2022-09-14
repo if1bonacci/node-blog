@@ -10,7 +10,7 @@ router.get('/user', userController.getAll);
 /* GET view single user. */
 router.get('/user/:id', userController.getById);
 
-/* GET view single user. */
+/* GET receive user avatar. */
 router.get('/user/avatar/:avatar', userController.getUserAvatar);
 
 /* POST create a new user. */
@@ -19,7 +19,7 @@ router.post('/user', userController.createUser);
 /* POST upload avatar. */
 router.post('/user/:id/upload-avatar', userController.uploadAvatar);
 
-/* POST upload avatar. */
+/* POST delete user. */
 router.post('/user/:id/delete', userController.remove);
 
 export default router;

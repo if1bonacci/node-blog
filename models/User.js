@@ -1,10 +1,17 @@
 import mongoose, {Schema} from 'mongoose';
 import validator from 'validator';
+import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 
 class User extends Schema {
   constructor() {
     super({
+        id: {
+          type: String,
+          immutable: true,
+          index: {unique: true},
+          default: uuidv4()
+        },
         email: {
           type: String,
           required: true,
@@ -12,16 +19,18 @@ class User extends Schema {
           trim: true,
           validate: [validator.isEmail, 'email is not valid.']
         },
+        role: {
+          type: Array,
+          required: true,
+          default: ['ROLE_USER']
+        },
         avatar: {
-          type: String, required: false, trim: true
+          type: String,
+          required: false,
         },
         password: {
           type: String,
-          required: true,
-          trim: true,
-          length: {
-            min: 6
-          }
+          required: true
         },
         firstName: {
           type: String, required: true, trim: true
@@ -43,38 +52,32 @@ class User extends Schema {
         }
       }
     )
+      .pre('save', this.hashPassword)
+      .pre('save', this.changeUpdatedAt)
+      .virtual('fullName', this.getFullName)
   }
 
   getFullName = function () {
     return `${this.firstName} ${this.lastName}`;
   }
-  compare = async function (candidate) {
-    return await bcrypt.compare(candidate, this.password);
-  }
 
-  hashPassword = async function(next) {
+  hashPassword = async function (next) {
     const user = this;
+    console.log('hash password')
 
     if (!user.isModified('password')) return next();
     try {
       user.password = await bcrypt.hash(user.password, 12);
 
       return next();
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
   }
 
-  virtual(name, options) {
-    return super.virtual('fullName', this.getFullName);
-  }
-
-  pre(method, fn) {
-    super.pre('save', function (next) {
-      this.updatedAt = Date.now();
-      return next();
-    });
-    return super.pre('save', this.hashPassword);
+  changeUpdatedAt = async function (next) {
+    this.updatedAt = Date.now();
+    return next();
   }
 }
 

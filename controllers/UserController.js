@@ -14,14 +14,14 @@ class UserController extends BaseController {
   }
 
   getById = async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({'id': req.params.id});
     res.status(200).render('user', {user: user})
   }
 
   getUserAvatar = async (req, res) => {
     let result = await this.uploadFileService.getFilePathByName(req.params.avatar)
 
-    return res.status(200).download(result);
+    res.status(200).sendFile(result);
   }
 
   createUser = async (req, res) => {
@@ -36,13 +36,14 @@ class UserController extends BaseController {
 
   uploadAvatar = async (req, res) => {
     try {
-      let nameOfFile = await this.uploadFileService.uploadFile(req.files, 'avatar')
-      const user = await User.updateOne({id: req.params.id}, {avatar: nameOfFile});
+      let nameOfFile = await this.uploadFileService.uploadFile(req.files, 'avatar');
+      const user = await User.findOne({id: req.params.id});
+      user.avatar = nameOfFile;
 
       res.status(200).render('user', {user: user});
     } catch (err) {
       console.log(err);
-      return res.status(500).redirect(`/user/${req.params.id}?error=true`);
+      res.status(500).redirect(`/user/${req.params.id}?error=true`);
     }
   }
 

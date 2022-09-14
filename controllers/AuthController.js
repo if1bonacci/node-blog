@@ -6,6 +6,10 @@ class AuthController extends BaseController {
     res.render('auth/register')
   }
 
+  loginPage = (req, res) => {
+    res.render('auth/login')
+  }
+
   register = async (req, res) => {
     try {
       const user = new User(req.body);
@@ -15,6 +19,12 @@ class AuthController extends BaseController {
       console.log(this.handlerErrors(err));
       res.redirect('/register?error=true')
     }
+  }
+
+  logout = (req, res) => {
+    req.logout(() => {
+      res.redirect('/');
+    });
   }
 }
 

@@ -3,11 +3,11 @@ import User from "../models/User.js";
 
 class AuthController extends BaseController {
   registerPage = (req, res) => {
-    res.render('auth/register', {title: 'Registration', subTitle: '', bg: 'home'})
+    res.render('auth/register', {title: 'Registration', subTitle: '', bg: 'registration'})
   }
 
   loginPage = (req, res) => {
-    res.render('auth/login', {title: 'Login', subTitle: '', bg: 'home'})
+    res.render('auth/login', {title: 'Login', subTitle: '', bg: 'login'})
   }
 
   register = async (req, res) => {

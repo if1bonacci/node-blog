@@ -1,6 +1,6 @@
 import path from "path";
 
-class UploadFileService {
+export default class UploadFileService {
   constructor() {
     this.__dirname = path.resolve();
     this.uploadDir = '/uploads/';
@@ -21,9 +21,6 @@ class UploadFileService {
   }
 
   getFilePathByName = function (filename) {
-    console.log(this.storagePath)
     return path.resolve(this.storagePath, filename);
   }
 }
-
-export default UploadFileService;

@@ -17,6 +17,11 @@ router.get('/contact', function(req, res) {
   res.render('contact', {title: 'Contact Me', subTitle: 'Have questions? I have answers', bg: 'contact'});
 });
 
+/* GET contact page. */
+router.get('/chat', function(req, res) {
+  res.render('chat', {title: 'Chat', subTitle: 'Lets try', bg: 'contact'});
+});
+
 /* GET post page. */
 router.get('/post', function(req, res) {
   res.render('post');

@@ -2,13 +2,16 @@ import { Server } from 'socket.io'
 
 class WssService {
   constructor(port, server) {
-    this.io = new Server(port, {cors: {
+    this.wss = new Server(port, {
+      cors: {
         origin: '*',
-      }}).listen(server)
+      }
+    }).listen(server)
     this.users = {}
+    console.log(`WSS running on port ${port}`)
   }
   run() {
-    this.io.on('connection', (socket) => {
+    this.wss.on('connection', (socket) => {
       socket.on('new-user', name => {
         this.users[socket.id] = name
         socket.broadcast.emit('user-connected', name)

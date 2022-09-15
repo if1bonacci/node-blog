@@ -14,23 +14,23 @@ import authRouter from './routes/auth.js'
 
 class Server {
   constructor(port, session) {
-    const __dirname = path.resolve();
-    this.port = port;
-    this.session = session;
-    this.app = express();
+    const __dirname = path.resolve()
+    this.port = port
+    this.session = session
+    this.app = express()
 
-    this.app.engine('ejs', engine);
-    this.app.set('view engine', 'ejs');
-    this.app.set('views', path.resolve(__dirname, 'views'));
-    this.app.use(methodOverride('_method'));
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: false }));
-    this.app.use(express.static(path.join(__dirname, 'public')));
-    this.app.use('/uploads', express.static(path.resolve('uploads')));
-    this.app.use(fileUpload());
+    this.app.engine('ejs', engine)
+    this.app.set('view engine', 'ejs')
+    this.app.set('views', path.resolve(__dirname, 'views'))
+    this.app.use(methodOverride('_method'))
+    this.app.use(express.json())
+    this.app.use(express.urlencoded({ extended: false }))
+    this.app.use(express.static(path.join(__dirname, 'public')))
+    this.app.use('/uploads', express.static(path.resolve('uploads')))
+    this.app.use(fileUpload())
 
     //inject auth module
-    this.authService = new AuthService();
+    this.authService = new AuthService()
     this.authModule()
 
     //inject routes
@@ -51,9 +51,9 @@ class Server {
     this.app.use(flash());
     this.app.use(cookieParser());
     this.app.use(this.session)
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
+    this.app.use(passport.initialize())
+    this.app.use(passport.session())
   }
 }
 
-export default Server;
+export default Server

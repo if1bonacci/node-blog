@@ -10,12 +10,12 @@ class UserController extends BaseController {
 
   getAll = async (req, res) => {
     const users = await User.find();
-    res.status(200).render('users', {users: users, title: 'Users list'})
+    res.status(200).render('users', {users: users, title: 'Users list', subTitle: '', bg: 'home'})
   }
 
   getById = async (req, res) => {
     const user = await User.findOne({'id': req.params.id});
-    res.status(200).render('user', {user: user})
+    res.status(200).render('user', {user: user, title: 'User info', subTitle: '', bg: 'home'})
   }
 
   getUserAvatar = async (req, res) => {
@@ -40,7 +40,7 @@ class UserController extends BaseController {
       const user = await User.findOne({id: req.params.id});
       user.avatar = nameOfFile;
 
-      res.status(200).render('user', {user: user});
+      res.status(200).render('user', {user: user, title: 'User info', subTitle: '', bg: 'home'});
     } catch (err) {
       console.log(err);
       res.status(500).redirect(`/user/${req.params.id}?error=true`);

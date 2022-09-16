@@ -1,12 +1,12 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import makeDbConnect from '../configs/database.js'
 import makeSession from '../configs/session.js'
 import makeSocketIo from '../configs/wss.js'
 import makeApp from '../configs/app.js'
 
 import AuthService from '../services/AuthService.js'
+import mongoose from 'mongoose'
 
 const makeServer = async () => {
   const PORT = process.env.PORT || 3000
@@ -17,7 +17,9 @@ const makeServer = async () => {
   const session = await makeSession(DB_URL, SESSION_SECRET)
   const app = makeApp(session, authService)
 
-  await makeDbConnect(DB_URL)
+  await mongoose.connect(DB_URL, {
+    useNewUrlParser: true
+  });
 
   const appServer = await app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`)

@@ -57,7 +57,7 @@ class User extends Schema {
       .virtual('fullName', this.getFullName)
   }
 
-  getFullName = function () {
+  static getFullName = function () {
     return `${this.firstName} ${this.lastName}`;
   }
 

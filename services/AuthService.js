@@ -2,8 +2,7 @@ import passportLocal from 'passport-local'
 import User from '../models/User.js'
 import bcrypt from 'bcrypt'
 
-class AuthService {
-  constructor() {}
+export default class AuthService {
   authenticateUser = async (email, password, done) => {
     const user = await User.findOne({email: email})
     if (user == null) return done(null, false, {message: 'No user with that email!'})
@@ -19,8 +18,7 @@ class AuthService {
       return done(err)
     }
   }
-
-  initialize = (passport) => {
+  initialize(passport) {
     const LocalStrategy = passportLocal.Strategy;
     passport.use(new LocalStrategy({usernameField: 'email'}, this.authenticateUser))
     passport.serializeUser((user, done) => done(null, {
@@ -37,6 +35,4 @@ class AuthService {
     })
   }
 }
-
-export default AuthService
 

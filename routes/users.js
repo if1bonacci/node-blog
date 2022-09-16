@@ -6,7 +6,7 @@ const router = Router();
 const userController = new UserController();
 
 /* GET users listing. */
-router.get('/user', commonMiddleware.checkRoles(['ROLE_USER']), userController.getAll);
+router.get('/user', userController.getAll);
 
 /* GET view single user. */
 router.get('/user/:id', userController.getById);

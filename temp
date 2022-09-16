@@ -1,0 +1,49 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
+import mongoose from 'mongoose'
+import makeWss from '../configs/wss.js'
+import makeSession from '../configs/session.js'
+import makeApp from '../app.js'
+
+import EmailNotificationService from '../services/EmailNotificationService.js'
+
+const PORT = process.env.PORT || 3000
+const WSS_PORT = process.env.WSS_PORT || 5000
+const SESSION_SECRET = process.env.SESSION_SECRET || 'session secret'
+const DB_URL = process.env.DATABASE_URL || ''
+//Email
+const EMAIL_HOST = process.env.EMAIL_HOST
+const EMAIL_PORT = process.env.EMAIL_PORT
+const EMAIL_USER = process.env.EMAIL_USER
+const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD
+const EMAIL_FROM_EMAIL = process.env.EMAIL_FROM_EMAIL
+
+const emailService = new EmailNotificationService(EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASSWORD, EMAIL_FROM_EMAIL)
+
+
+// session
+const sessionConnect = makeSession(DB_URL, SESSION_SECRET)
+
+// application
+const app =  makeApp(sessionConnect)
+
+const server = new Promise((resolve, reject) => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`)
+  });
+});
+
+server.then(() => {
+  // database
+  mongoose.connect(DB_URL, {
+    useNewUrlParser: true
+  });
+})
+
+server.then(() => {
+  // WSS
+  makeWss(WSS_PORT, app);
+})
+
+
+

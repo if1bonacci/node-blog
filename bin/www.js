@@ -1,34 +1,35 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
-import Server from '../server.js'
-import MongoDB from '../configs/database.js'
-import session from 'express-session'
-import MongoStore from 'connect-mongo'
-import WssService from '../services/WssService.js'
 
-const PORT = process.env.PORT || 3000
-const WSS_PORT = process.env.WSS_PORT || 5000
-const SESSION_SECRET = process.env.SESSION_SECRET || 'session secret'
-const DB_URL = process.env.DATABASE_URL || ''
+import makeDbConnect from '../configs/database.js'
+import makeSession from '../configs/session.js'
+import makeSocketIo from '../configs/wss.js'
+import makeApp from '../configs/app.js'
 
-// database
-const db = new MongoDB(DB_URL)
-db.connect()
+import AuthService from '../services/AuthService.js'
 
-// session
-const sessionConnect = session({
-  secret: SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: DB_URL
-  })
-})
+const makeServer = async () => {
+  const PORT = process.env.PORT || 3000
+  const WSS_PORT = process.env.WSS_PORT || 5000
+  const SESSION_SECRET = process.env.SESSION_SECRET || 'session secret'
+  const DB_URL = process.env.DATABASE_URL || ''
+  const authService = new AuthService();
+  const session = await makeSession(DB_URL, SESSION_SECRET)
+  const app = makeApp(session, authService)
 
-// application
-const app = new Server(PORT, sessionConnect)
-const appServer = app.run()
+  await makeDbConnect(DB_URL)
 
-//WSS
-const wss = new WssService(WSS_PORT, appServer);
-wss.run();
+  const appServer = await app.listen(PORT, () => {
+    console.log(`Server is running on port: ${PORT}`)
+  });
+
+  await makeSocketIo(WSS_PORT, appServer)
+
+  return app;
+}
+try {
+  makeServer()
+} catch (err) {
+  console.log(err)
+}
+

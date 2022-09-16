@@ -1,4 +1,4 @@
-import UploadFileService from '../services/UploadFileService.js'
+import UploadFileService from '../../services/UploadFileService.js'
 
 describe('UploadFileService', () => {
   const uploadFileService = new UploadFileService()

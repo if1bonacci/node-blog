@@ -21,8 +21,8 @@ export default function (session) {
   app.use(express.static(path.join(__dirname, 'public')))
   app.use('/uploads', express.static(path.resolve('uploads')))
   app.use(fileUpload())
-  app.use(flash());
-  app.use(cookieParser());
+  app.use(flash())
+  app.use(cookieParser())
   app.use(session)
   app.use(passport.initialize())
   app.use(passport.session())

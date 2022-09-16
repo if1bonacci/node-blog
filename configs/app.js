@@ -3,10 +3,12 @@ import path from 'path'
 import engine from 'ejs-mate'
 import methodOverride from 'method-override'
 import fileUpload from 'express-fileupload'
-import injectAuth from './auth.js'
 import injectRoutes from './routs.js'
+import passport from 'passport'
+import flash from 'express-flash'
+import cookieParser from 'cookie-parser'
 
-export default function (session, authService) {
+export default function (session) {
   const __dirname = path.resolve()
   const app = express()
 
@@ -19,9 +21,11 @@ export default function (session, authService) {
   app.use(express.static(path.join(__dirname, 'public')))
   app.use('/uploads', express.static(path.resolve('uploads')))
   app.use(fileUpload())
-
-  //inject auth module
-  injectAuth(app, session, authService)
+  app.use(flash());
+  app.use(cookieParser());
+  app.use(session)
+  app.use(passport.initialize())
+  app.use(passport.session())
 
   //inject router
   injectRoutes(app)

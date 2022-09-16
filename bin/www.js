@@ -7,19 +7,23 @@ import makeApp from '../configs/app.js'
 
 import AuthService from '../services/AuthService.js'
 import mongoose from 'mongoose'
+import passport from 'passport'
 
-const makeServer = async () => {
+const authService = new AuthService();
+
+const makeServer = async (authService) => {
   const PORT = process.env.PORT || 3000
   const WSS_PORT = process.env.WSS_PORT || 5000
   const SESSION_SECRET = process.env.SESSION_SECRET || 'session secret'
   const DB_URL = process.env.DATABASE_URL || ''
-  const authService = new AuthService();
   const session = await makeSession(DB_URL, SESSION_SECRET)
-  const app = makeApp(session, authService)
+  const app = makeApp(session)
 
   await mongoose.connect(DB_URL, {
     useNewUrlParser: true
   });
+
+  await authService.initialize(passport);
 
   const appServer = await app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`)
@@ -30,7 +34,7 @@ const makeServer = async () => {
   return app;
 }
 try {
-  makeServer()
+  makeServer(authService)
 } catch (err) {
   console.log(err)
 }

@@ -1,6 +1,9 @@
 import nodemailer from 'nodemailer'
 
 export default class EmailNotificationService {
+  private transporter: any
+  private fromEmail: string
+
   constructor(host, port, user, password, fromEmail) {
     this.transporter = nodemailer.createTransport({
       host: host,
@@ -12,7 +15,7 @@ export default class EmailNotificationService {
     })
     this.fromEmail = fromEmail
   }
-  send = function (to, subject, message) {
+  send = (to, subject, message) => {
     let mailOptions = {
       from: this.fromEmail,
       to: to,

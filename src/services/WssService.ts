@@ -1,13 +1,15 @@
 import { Server } from 'socket.io'
 
 class WssService {
-  constructor(port, server) {
+  private users: Object = {}
+  private wss: Server
+
+  constructor(port: number, server: any) {
     this.wss = new Server(port, {
       cors: {
         origin: '*',
       }
     }).listen(server)
-    this.users = {}
     console.log(`WSS running on port ${port}`)
   }
   run() {

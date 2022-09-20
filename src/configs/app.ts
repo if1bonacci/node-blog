@@ -1,4 +1,4 @@
-import express from 'express'
+import express, {RequestHandler} from 'express'
 import path from 'path'
 import engine from 'ejs-mate'
 import methodOverride from 'method-override'
@@ -8,7 +8,7 @@ import passport from 'passport'
 import flash from 'express-flash'
 import cookieParser from 'cookie-parser'
 
-export default function (session) {
+export default function (session: RequestHandler) {
   const __dirname = path.resolve()
   const app = express()
 

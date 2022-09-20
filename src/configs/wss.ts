@@ -1,7 +1,7 @@
-import makeChat from '../services/ChatService.js'
+import makeChat from '../services/ChatService'
 import { Server } from 'socket.io'
 
-export default function(port, appServer) {
+export default function(port: number, appServer: any) {
   const io = new Server(port, {
     cors: {
       origin: '*',

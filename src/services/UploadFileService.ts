@@ -1,13 +1,17 @@
 import path from "path";
 
 export default class UploadFileService {
+  private __dirname: string
+  private uploadDir: string
+  private storagePath: string
+
   constructor() {
     this.__dirname = path.resolve();
     this.uploadDir = '/uploads/';
     this.storagePath = path.resolve(this.__dirname + this.uploadDir);
   }
 
-  uploadFile = async function (files, fileField) {
+  uploadFile = async (files: any, fileField: string) => {
     if (!files || Object.keys(files).length === 0 || !files[fileField]) {
       throw new Error('No files were uploaded.');
     }
@@ -20,7 +24,7 @@ export default class UploadFileService {
     return nameOfFile;
   }
 
-  getFilePathByName = function (filename) {
+  getFilePathByName = (filename: string): string => {
     return path.resolve(this.storagePath, filename);
   }
 }

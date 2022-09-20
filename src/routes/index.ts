@@ -1,5 +1,4 @@
-import { Router } from "express";
-import { promises as fsPromises } from 'fs'
+import { Router } from 'express'
 
 const router = Router();
 

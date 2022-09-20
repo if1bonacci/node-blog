@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import passport from 'passport'
-import authController from '../controllers/AuthController.js'
-import commonMiddleware from '../middlewares/CommonMiddleware.js'
+import authController from '../controllers/AuthController'
+import commonMiddleware from '../middlewares/CommonMiddleware'
 
 const router = Router()
 

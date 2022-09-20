@@ -1,8 +1,9 @@
-import BaseController from "./BaseController.js";
-import User from "../models/User.js";
-import UploadFileService from "../services/UploadFileService.js";
+import BaseController from "./BaseController";
+import User from "../models/User";
+import UploadFileService from "../services/UploadFileService";
 
 class UserController extends BaseController {
+  private uploadFileService: { getFilePathByName: Function, uploadFile: Function }
   constructor() {
     super();
     this.uploadFileService = new UploadFileService()

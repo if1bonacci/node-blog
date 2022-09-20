@@ -3,7 +3,7 @@ import validator from 'validator'
 import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
 
-interface IUser {
+export interface IUser {
   id: string;
   email: string;
   avatar?: string;

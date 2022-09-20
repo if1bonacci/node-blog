@@ -4,7 +4,7 @@ export default class EmailNotificationService {
   private transporter: any
   private fromEmail: string
 
-  constructor(host, port, user, password, fromEmail) {
+  constructor(host: string, port: number, user: string, password: string, fromEmail: string) {
     this.transporter = nodemailer.createTransport({
       host: host,
       port: port,
@@ -15,7 +15,7 @@ export default class EmailNotificationService {
     })
     this.fromEmail = fromEmail
   }
-  send = (to, subject, message) => {
+  send = (to: string, subject: string, message: string): void => {
     let mailOptions = {
       from: this.fromEmail,
       to: to,
@@ -23,14 +23,12 @@ export default class EmailNotificationService {
       text: message
     }
 
-    this.transporter.sendMail(mailOptions, function (err, info) {
+    this.transporter.sendMail(mailOptions, function (err: string, info: object) {
       if(err) {
         console.log(err)
-        return false
       } else {
         console.log(`email has sent!`)
         console.log(info)
-        return true
       }
     });
   }

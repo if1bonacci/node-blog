@@ -1,5 +1,5 @@
 import passportLocal from 'passport-local'
-import User from '../models/User'
+import User, { IUser } from '../models/User'
 import bcrypt from 'bcrypt'
 
 export default class AuthService {
@@ -18,17 +18,17 @@ export default class AuthService {
       return done(err)
     }
   }
-  initialize(passport) {
+  initialize(passport: any) {
     const LocalStrategy = passportLocal.Strategy;
     passport.use(new LocalStrategy({usernameField: 'email'}, this.authenticateUser))
-    passport.serializeUser((user, done: Function) => done(null, {
+    passport.serializeUser((user: IUser, done: Function) => done(null, {
       id: user.id,
       roles: user.roles,
       firstName: user.firstName,
       lastName: user.lastName,
       avatar: user.avatar
     }))
-    passport.deserializeUser(async (user, done: Function) => {
+    passport.deserializeUser(async (user: IUser, done: Function) => {
       // every time call db
       // let userData = await User.findOne({id: user.id})
       return done(null, user)

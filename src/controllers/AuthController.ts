@@ -1,16 +1,17 @@
-import BaseController from "./BaseController.js";
-import User from "../models/User.js";
+import BaseController from './BaseController'
+import User from '../models/User'
+import { Request, Response, NextFunction } from 'express'
 
 class AuthController extends BaseController {
-  registerPage = (req, res) => {
+  registerPage = (req: Request, res: Response) => {
     res.render('auth/register', {title: 'Registration', subTitle: '', bg: 'registration'})
   }
 
-  loginPage = (req, res) => {
+  loginPage = (req: Request, res: Response) => {
     res.render('auth/login', {title: 'Login', subTitle: '', bg: 'login'})
   }
 
-  register = async (req, res) => {
+  register = async (req: Request, res: Response) => {
     try {
       const user = new User(req.body);
       await user.save();
@@ -21,7 +22,7 @@ class AuthController extends BaseController {
     }
   }
 
-  logout = (req, res) => {
+  logout = (req: Request, res: Response) => {
     req.logout(() => {
       res.redirect('/');
     });

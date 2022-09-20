@@ -1,5 +1,6 @@
 import BaseController from "./BaseController";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
+import { Request, Response, NextFunction } from 'express'
 import UploadFileService from "../services/UploadFileService";
 
 class UserController extends BaseController {
@@ -9,23 +10,23 @@ class UserController extends BaseController {
     this.uploadFileService = new UploadFileService()
   }
 
-  getAll = async (req, res) => {
+  getAll = async (req: Request, res: Response) => {
     const users = await User.find();
     res.status(200).render('users', {users: users, title: 'Users list', subTitle: '', bg: 'home'})
   }
 
-  getById = async (req, res) => {
+  getById = async (req: Request, res: Response) => {
     const user = await User.findOne({'id': req.params.id});
     res.status(200).render('user', {user: user, title: 'User info', subTitle: '', bg: 'home'})
   }
 
-  getUserAvatar = async (req, res) => {
+  getUserAvatar = async (req: Request, res: Response) => {
     let result = await this.uploadFileService.getFilePathByName(req.params.avatar)
 
     res.status(200).sendFile(result);
   }
 
-  createUser = async (req, res) => {
+  createUser = async (req: Request, res: Response) => {
     try {
       const user = new User(req.body);
       await user.save()
@@ -35,20 +36,24 @@ class UserController extends BaseController {
     }
   }
 
-  uploadAvatar = async (req, res) => {
+  uploadAvatar = async (req: Request, res: Response) => {
     try {
       let nameOfFile = await this.uploadFileService.uploadFile(req.files, 'avatar');
       const user = await User.findOne({id: req.params.id});
-      user.avatar = nameOfFile;
+      if (user instanceof User) {
+        user.avatar = nameOfFile;
+        res.status(200).render('user', {user: user, title: 'User info', subTitle: '', bg: 'home'});
+      } else {
+        throw new Error('User doesn\'t exist')
+      }
 
-      res.status(200).render('user', {user: user, title: 'User info', subTitle: '', bg: 'home'});
     } catch (err) {
       console.log(err);
       res.status(500).redirect(`/user/${req.params.id}?error=true`);
     }
   }
 
-  remove = async (req, res) => {
+  remove = async (req: Request, res: Response) => {
     try {
       await User.deleteOne({id: req.params.id});
 

@@ -1,15 +1,15 @@
 class BaseController {
   constructor() {}
-  handlerErrors = function (err) {
+  handlerErrors = function (err: any) {
     console.log(err)
 
-    let data = {
+    let data: any = {
       status: 500,
       errors: {}
     };
 
     if (err.message.includes('Validation failed')) {
-      Object.values(err.errors).forEach(({properties}) => {
+      Object.values(err.errors).forEach((properties: any) => {
         data.errors[properties.path] = properties.message;
       });
     } else if (err.code === 11000) {

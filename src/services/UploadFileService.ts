@@ -15,9 +15,9 @@ export default class UploadFileService {
     if (!files || Object.keys(files).length === 0 || !files[fileField]) {
       throw new Error('No files were uploaded.');
     }
-    let file = files[fileField];
-    let nameOfFile = file.md5 + path.extname(file.name)
-    let uploadPath = path.resolve(this.storagePath, nameOfFile);
+    const file = files[fileField];
+    const nameOfFile = file.md5 + path.extname(file.name)
+    const uploadPath = path.resolve(this.storagePath, nameOfFile);
 
     await file.mv(uploadPath)
 

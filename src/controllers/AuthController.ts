@@ -1,6 +1,6 @@
 import BaseController from './BaseController'
 import User from '../models/User'
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 
 class AuthController extends BaseController {
   registerPage = (req: Request, res: Response) => {

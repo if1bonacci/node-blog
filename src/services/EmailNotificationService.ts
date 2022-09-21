@@ -16,7 +16,7 @@ export default class EmailNotificationService {
     this.fromEmail = fromEmail
   }
   send = (to: string, subject: string, message: string): void => {
-    let mailOptions = {
+    const mailOptions = {
       from: this.fromEmail,
       to: to,
       subject: subject,

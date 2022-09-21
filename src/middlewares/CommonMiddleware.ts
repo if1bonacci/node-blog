@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
+//@todo(remove any)
 class CommonMiddleware {
   isAuthUser(req: Request, res: Response, next: NextFunction) {
     if (req.isAuthenticated()) {
@@ -16,7 +17,7 @@ class CommonMiddleware {
   }
 
   checkRoles = (roles: Array<string>) => {
-    return (req: any, res: any, next: NextFunction) => {
+    return (req: any, res: Response, next: NextFunction) => {
       if (!req.isAuthenticated()) {
         res.status(403).redirect('/');
       }

@@ -1,10 +1,10 @@
-import BaseController from "./BaseController";
-import User, { IUser } from "../models/User";
-import { Request, Response, NextFunction } from 'express'
-import UploadFileService from "../services/UploadFileService";
+import BaseController from './BaseController'
+import User from '../models/User'
+import { Request, Response } from 'express'
+import UploadFileService from '../services/UploadFileService'
 
 class UserController extends BaseController {
-  private uploadFileService: { getFilePathByName: Function, uploadFile: Function }
+  private uploadFileService: UploadFileService
   constructor() {
     super();
     this.uploadFileService = new UploadFileService()
@@ -21,7 +21,7 @@ class UserController extends BaseController {
   }
 
   getUserAvatar = async (req: Request, res: Response) => {
-    let result = await this.uploadFileService.getFilePathByName(req.params.avatar)
+    const result = await this.uploadFileService.getFilePathByName(req.params.avatar)
 
     res.status(200).sendFile(result);
   }
@@ -38,7 +38,7 @@ class UserController extends BaseController {
 
   uploadAvatar = async (req: Request, res: Response) => {
     try {
-      let nameOfFile = await this.uploadFileService.uploadFile(req.files, 'avatar');
+      const nameOfFile = await this.uploadFileService.uploadFile(req.files, 'avatar');
       const user = await User.findOne({id: req.params.id});
       if (user instanceof User) {
         user.avatar = nameOfFile;

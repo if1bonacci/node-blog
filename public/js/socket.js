@@ -33,7 +33,7 @@ messageForm.addEventListener('submit', e => {
 function appendMessage(data) {
   const messageElement = document.createElement('div')
   messageElement.setAttribute('class', 'd-flex flex-row justify-content-start mb-4')
-  messageElement.innerHTML = `<div class=\"p-3 ms-3\" style=\"border-radius: 15px; background-color: rgba(57, 192, 237,.2);\">
+  messageElement.innerHTML = `<div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
   <p>${data.name}: ${data.message}</p></div>`
   messageContainer.appendChild(messageElement)
 }

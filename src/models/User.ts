@@ -1,4 +1,4 @@
-import mongoose, {Schema} from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import validator from 'validator'
 import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
@@ -85,16 +85,14 @@ userSchema.pre('save', function(next) {
 });
 
 userSchema.pre('save', async function(next) {
-  const user = this;
-  if (!user.isModified('password')) return next();
+  if (!this.isModified('password')) return next();
   try {
-    const hash = await bcrypt.hash(user.password, 12);
-    user.password = hash;
+    const hash = await bcrypt.hash(this.password, 12);
+    this.password = hash;
 
     return next();
-  } catch(err) {
-    return // @ts-ignore
-    next(err);
+  } catch(err: any) {
+    return next(err);
   }
 })
 
